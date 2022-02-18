@@ -1,13 +1,14 @@
 from tkinter import *
 from interfaz_poo import *
+from PIL import ImageTk, Image
 
-print(,)
 
 
 def main():
     root = Tk()
     root.wm_title("Admicon")
-    app = Ventana(root, )
+    #root.wm_attributes('-transparentcolor', 'red')
+    app = Ventana_inicio(root)
     app.mainloop()
 
 

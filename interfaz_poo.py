@@ -1,92 +1,54 @@
 from glob import glob
 from tkinter import *
+from PIL import ImageTk, Image
+from control_cuentas import *
 
-class Ventana(Frame):
+
+class Ventana_inicio(Frame):
     '''
         abre una ventana
 
         frame:dato tipo frame
     '''
+
+    # CONTRUCTOR DE CLASE Ventana_inicio
     def __init__(self, master=None):
         super().__init__(master, width=1440, height=900)
         self.master = master
         self.pack()
         self.create_widgets()
 
+    # FUNCIONES
     def create_widgets(self):
-        pass   
+
+        self.fondo = ImageTk.PhotoImage(Image.open("img/fondo.jpg"))
+        self.login = PhotoImage(file="img/login.png")
+        self.label_fondo = Label(
+            self, image=self.fondo, width=1440, height=900).place(x=0, y=0)
+
+        self.label_cuadro = Label(
+            self, bg="white", width=50, height=30).place(x=20, y=60)
+        self.label_login = Label(
+            self, image=self.login, bg="white").place(x=140, y=60)
+        self.ingrese_aqui = Label(self, text="Ingrese Aquí", font=(
+            "Arial", 20, "bold"), bg="white", fg="#303452").place(x=110, y=170)
+        self.label_usuario = Label(self, text="Usuario o correo", font=(
+            "Arial", 15, "bold"), bg="white", fg="#303452").place(x=50, y=230)
+        self.entry_usuario = Entry(self, font=("Arial", 12, "bold")).place(
+            x=50, y=270, width=290, height=30)
+        self.label_contrase = Label(self, text="Contraseña", font=(
+            "Arial", 15, "bold"), bg="white", fg="#303452").place(x=50, y=330)
+        self.entry_contrase = Entry(self).place(
+            x=50, y=370, width=290, height=30)
+
+        self.button_acceder = Button(self, text="Acceder", command= open_control_cuentas, font=(
+            "Arial", 15, "bold"), bg="#303452", fg="white", width=15, height=2).place(x=100, y=430)
+        self.button_registrar = Button(self, text="Registrarse", font=(
+            "Arial", 15, "bold"), bg="white", fg="#303452", width=15, height=2).place(x=650, y=430)
 
 
 
-root = Tk()
-root.title("Admicon - Recibo")
-root.geometry("1440x900")
-root.config(bg="lightblue")
-
-frame_3 = Frame(root) #Frame de visualizacion de recibo
-frame_3.place(x = 500, y = 30)
-frame_3.config(bg="white", width=700, height=400)
-
-
-    
-
-#WINDOWS
-#Control de cuentas
-def open_control_cuentas():
-    occ = Toplevel() #la nueva ventana
-    occ.title("Admicon - Control de Cuentas")
-    occ.geometry("1440x900")
-    occ.config(bg="lightblue")
-
-    frame_3 = Frame(occ)
-    frame_3.place(x = 0, y = 260)
-    frame_3.config(bg="white", width=1440, height=300)
-
-    button_recibo = Button(occ, text="Recibos", width=20, height=1 ).place(x = 0, y = 0)                            
-    
-    button_propietarios = Button(occ, text="Datos Propietarios", width=20, height=1).place(x = 420, y = 0) 
-    button_correos = Button(occ, text="Envío Correos", width=20, height=1).place(x = 630, y = 0)  
-    button_nomina = Button(occ, text="Nómina", width=20, height=1).place(x = 840, y = 0)  
-
-    registrar_pago =  Button(occ, text="Registrar Pago", command= registro_pago, width=20, height=1).place(x = 630, y = 60)
-    añadir_cobro =  Button(occ, text="Registrar Cobro", command= añade_cobro, width=20, height=1).place(x = 630, y = 110)
-
-
-
-    label_button_cuentas = Label(occ, text="Control de Cuentas", font=("Arial"), bg="lightblue", width=20, height=1 ).place(x = 210, y = 0)
-    total_pago = Label(occ, text="Total Pago:", font=("Arial"), bg="lightblue", width=20, height=1 ).place(x = 20, y = 60) 
-    total_pago_mostrar = Label(occ, text="12345678,90 Bs", font=("Arial"), bg="lightblue", relief=SUNKEN ).place(x=180, y=60, width=150) 
-    porcentaje_mora = Label(occ, text="1 % Mora:", font=("Arial"), bg="lightblue", width=20, height=1 ).place(x = 20, y = 90)                                   
-    porcentaje_mora_mostrar = Label(occ, text="12345678,90 Bs", font=("Arial"), bg="lightblue", relief=SUNKEN ).place(x=180, y=90, width=150) 
-    fecha_occ = Label(occ, text="Fecha:", font=("Arial"), bg="lightblue", width=20, height=1 ).place(x = 20, y = 120)                                   
-    fecha_occ_mostrar = Label(occ, text="Día/Mes/Año", font=("Arial"), bg="lightblue", relief=SUNKEN ).place(x=180, y=120, width=120)
-
-def registro_pago():
-    rp = Toplevel() #la nueva ventana
-    rp.title("Registrar Pago")
-    rp.geometry("500x500")
-    rp.config(bg="lightblue")  
-
-    registro_de_pago= Label(rp, text="Registro de Pago:", font=("Arial"), bg="lightblue" ).place(x=180, y=10) 
-    apartamento= Label(rp, text="Apartamento:", font=("Arial"), bg="lightblue" ).place(x=30, y=80) 
-    acumulado= Label(rp, text="Acumulado:", font=("Arial"), bg="lightblue" ).place(x=30, y=130) 
-    monto= Label(rp, text="Monto:", font=("Arial"), bg="lightblue" ).place(x=30, y=180) 
-    restante= Label(rp, text="Restante:", font=("Arial"), bg="lightblue" ).place(x=30, y=400) 
-
-    apartamento_entry = Entry(rp).place(x=140, y=80, width=200)
-    monto_entry = Entry(rp).place(x=140, y=180, width=200)
-
-    acumulado_label = Label(rp, text="12345678,90 Bs", font=("Arial"), bg="lightblue", relief=SUNKEN ).place(x=140, y=130, width=200) 
-    Monto_Bs = Label(rp, text="12345678,90 Bs", font=("Arial"), bg="lightblue", relief=SUNKEN ).place(x=140, y=200, width=200) 
-    restante_mostrar = Label(rp, text="0,00 Bs", font=("Arial"), bg="lightblue", relief=SUNKEN ).place(x=140, y=400, width=200) 
-
-    a = IntVar()
-    Radiobutton(rp, text="Bs", variable=a, value=1, bg="lightblue" ).place(x=400, y=180)
-    Radiobutton(rp, text="$", variable=a, value=2, bg="lightblue" ).place(x=350, y=180)
-
-    acumulado_mostrar =  Button(rp, text="Mostrar Acumulado", width=15, height=1).place(x = 350, y = 80)
-    añadir =  Button(rp, text="Añadir", width=15, height=1).place(x = 150, y = 300)
-
+"""
 
 def añade_cobro():
     ac = Toplevel() #la nueva ventana
@@ -277,4 +239,4 @@ buscar_item = Entry().place(x=190, y=340, width=200)
 def tabla_saldo():
    pass 
 
-root.mainloop()
+root.mainloop()  """
