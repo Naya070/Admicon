@@ -1,5 +1,3 @@
-
-from glob import glob
 from main import *
 from tkinter import *
 from interfaz_poo import *

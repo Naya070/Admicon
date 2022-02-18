@@ -1,0 +1,53 @@
+from glob import glob
+from main import *
+from tkinter import *
+from interfaz_poo import *
+from tkinter import ttk
+from PIL import ImageTk, Image
+from controladorbd import *
+
+class anade_cobro(Frame):
+
+     # CONSTRUCTOR
+    def __init__(self, master=None):
+        super().__init__(master, width=1440, height=900)
+        self.master = master
+        self.pack()
+        self.create_widgets()
+
+
+
+    def anade_cobro(self):
+        self = Toplevel() #la nueva ventana
+        self.title("Añadir Cobro")
+        self.geometry("500x500")
+        self.config(bg="lightblue")  
+
+        self.añadir_cobro= Label(self, text="Añadir Cobro:", font=("Arial"), bg="lightblue" ).place(x=180, y=10) 
+        self.apartamento= Label(self, text="Apartamento:", font=("Arial"), bg="lightblue" ).place(x=30, y=60)  
+        self.acumulado= Label(self, text="Acumulado:", font=("Arial"), bg="lightblue" ).place(x=30, y=100) 
+        self.monto= Label(self, text="Monto:", font=("Arial"), bg="lightblue" ).place(x=30, y=200) 
+        self.restante= Label(self, text="Restante:", font=("Arial"), bg="lightblue" ).place(x=30, y=400) 
+
+        self.apartamento_entry = Entry(self).place(x=140, y=60, width=200)
+        self.monto_entry = Entry(self).place(x=140, y=200, width=200)
+
+        self.acumulado_label = Label(self, text="12345678,90 Bs", font=("Arial"), bg="lightblue", relief=SUNKEN ).place(x=140, y=100, width=200) 
+        self.Monto_Bs = Label(self, text="12345678,90 Bs", font=("Arial"), bg="lightblue", relief=SUNKEN ).place(x=140, y=220, width=200) 
+        self.restante_mostrar = Label(self, text="0,00 Bs", font=("Arial"), bg="lightblue", relief=SUNKEN ).place(x=140, y=400, width=200) 
+
+        self.a = IntVar()
+        self.Radiobutton(self, text="Bs", variable=self.a, value=1, bg="lightblue" ).place(x=400, y=200)
+        self.Radiobutton(self, text="$", variable=self.a, value=2, bg="lightblue" ).place(x=350, y=200)
+
+        self.b = IntVar()
+        self.Radiobutton(self, text="Alq. Estacionamiento", variable=self.b, value=1, bg="lightblue" ).place(x=350, y=100)
+        self.Radiobutton(self, text="Cuota Extra", variable=self.b, value=2, bg="lightblue" ).place(x=350, y=120)
+
+        self.cba = StringVar() #variable var entero
+        self.c = Checkbutton(self, text= "Añadir a Todos los Apartamentos", variable= self.cba, onvalue = "On", offvalue= "Off", font=("Arial"), bg="lightblue")
+        self.c.deselect()
+        self.c.place(x=30, y=150)
+
+        self.acumulado_mostrar =  Button(self, text="Mostrar Acumulado",  width=15, height=1).place(x = 350, y = 60)
+        self.añadir =  Button(self, text="Añadir", width=15, height=1).place(x = 150, y = 300)

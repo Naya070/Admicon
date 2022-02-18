@@ -41,7 +41,7 @@ class Ventana_inicio(Frame):
         self.entry_contrase = Entry(self).place(
             x=50, y=370, width=290, height=30)
 
-        self.button_acceder = Button(self, text="Acceder", command= open_control_cuentas, font=(
+        self.button_acceder = Button(self, text="Acceder", font=(
             "Arial", 15, "bold"), bg="#303452", fg="white", width=15, height=2).place(x=100, y=430)
         self.button_registrar = Button(self, text="Registrarse", font=(
             "Arial", 15, "bold"), bg="white", fg="#303452", width=15, height=2).place(x=650, y=430)
@@ -50,87 +50,7 @@ class Ventana_inicio(Frame):
 
 """
 
-def añade_cobro():
-    ac = Toplevel() #la nueva ventana
-    ac.title("Añadir Cobro")
-    ac.geometry("500x500")
-    ac.config(bg="lightblue")  
 
-    añadir_cobro= Label(ac, text="Añadir Cobro:", font=("Arial"), bg="lightblue" ).place(x=180, y=10) 
-    apartamento= Label(ac, text="Apartamento:", font=("Arial"), bg="lightblue" ).place(x=30, y=60)  
-    acumulado= Label(ac, text="Acumulado:", font=("Arial"), bg="lightblue" ).place(x=30, y=100) 
-    monto= Label(ac, text="Monto:", font=("Arial"), bg="lightblue" ).place(x=30, y=200) 
-    restante= Label(ac, text="Restante:", font=("Arial"), bg="lightblue" ).place(x=30, y=400) 
-
-    apartamento_entry = Entry(ac).place(x=140, y=60, width=200)
-    monto_entry = Entry(ac).place(x=140, y=200, width=200)
-
-    acumulado_label = Label(ac, text="12345678,90 Bs", font=("Arial"), bg="lightblue", relief=SUNKEN ).place(x=140, y=100, width=200) 
-    Monto_Bs = Label(ac, text="12345678,90 Bs", font=("Arial"), bg="lightblue", relief=SUNKEN ).place(x=140, y=220, width=200) 
-    restante_mostrar = Label(ac, text="0,00 Bs", font=("Arial"), bg="lightblue", relief=SUNKEN ).place(x=140, y=400, width=200) 
-
-    a = IntVar()
-    Radiobutton(ac, text="Bs", variable=a, value=1, bg="lightblue" ).place(x=400, y=200)
-    Radiobutton(ac, text="$", variable=a, value=2, bg="lightblue" ).place(x=350, y=200)
-
-    b = IntVar()
-    Radiobutton(ac, text="Alq. Estacionamiento", variable=b, value=1, bg="lightblue" ).place(x=350, y=100)
-    Radiobutton(ac, text="Cuota Extra", variable=b, value=2, bg="lightblue" ).place(x=350, y=120)
-
-    cba = StringVar() #variable var entero
-    c = Checkbutton(ac, text= "Añadir a Todos los Apartamentos", variable= cba, onvalue = "On", offvalue= "Off", font=("Arial"), bg="lightblue")
-    c.deselect()
-    c.place(x=30, y=150)
-
-    acumulado_mostrar =  Button(ac, text="Mostrar Acumulado",  width=15, height=1).place(x = 350, y = 60)
-    añadir =  Button(ac, text="Añadir", width=15, height=1).place(x = 150, y = 300)
-
-
-
-def correos_envio():
-    ce = Toplevel() #la nueva ventana
-    ce.title("Admicon - Envío de Correos")
-    ce.geometry("1440x900")
-    ce.config(bg="lightblue")
-
-   #Labels
-    individual_correo = Label(ce, text="INDIVIDUAL", font=("Arial"), bg="lightblue" ).place(x=10, y=40) 
-    apartamento = Label(ce, text="Apartamento:", font=("Arial"), bg="lightblue" ).place(x=10, y=100)  
-
-    global_correo = Label(ce, text="GLOBAL", font=("Arial"), bg="lightblue" ).place(x=500, y=40) 
-
-    label_button_correo = Label(ce, text="Envío Correos", font=("Arial"), bg="lightblue", width=20, height=1 ).place(x = 630, y = 0) 
-
-    #Entry
-    apartamento_entry = Entry(ce).place(x=150, y=98, width=200) 
-
-    #Buttons
-    button_recibo = Button(ce, text="Recibos", width=20, height=1 ).place(x = 0, y = 0)      
-    button_cuentas = Button(ce, text="Control de Cuentas", command= open_control_cuentas, width=20, height=1).place(x = 210, y = 0)     
-    button_propietarios = Button(ce, text="Datos Propietarios", command= datos_propietarios, width=20, height=1).place(x = 420, y = 0) 
-    
-    button_nomina = Button(ce, text="Nómina", width=20, height=1).place(x = 840, y = 0)  
-
-    #checkbuttons
-    cea = StringVar() #variable var entero
-    c = Checkbutton(ce, text= "Enviar recibo", variable= cea, onvalue = "On", offvalue= "Off", font=("Arial"), bg="lightblue")
-    c.deselect()
-    c.place(x=30, y=150)
-
-    ceb = StringVar() #variable var entero
-    c = Checkbutton(ce, text= "Añadir Recordatorio de Morosidad", variable= ceb, onvalue = "On", offvalue= "Off", font=("Arial"), bg="lightblue")
-    c.deselect()
-    c.place(x=30, y=180)
-
-    cec = StringVar() #variable var entero
-    c = Checkbutton(ce, text= "Enviar Recibo a Todos los Propietarios", variable= cec, onvalue = "On", offvalue= "Off", font=("Arial"), bg="lightblue")
-    c.deselect()
-    c.place(x=450, y=180)
-
-    ced = StringVar() #variable var entero
-    c = Checkbutton(ce, text= "Enviar Recordatorio de Morosidad a Todos los Morosos", variable= ced, onvalue = "On", offvalue= "Off", font=("Arial"), bg="lightblue")
-    c.deselect()
-    c.place(x=450, y=280)
 
 
 
