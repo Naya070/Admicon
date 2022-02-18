@@ -7,7 +7,6 @@ from PIL import ImageTk, Image
 def main():
     root = Tk()
     root.wm_title("Admicon")
-    #root.wm_attributes('-transparentcolor', 'red')
     app = Ventana_inicio(root)
     app.mainloop()
 

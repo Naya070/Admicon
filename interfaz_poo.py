@@ -11,7 +11,7 @@ class Ventana_inicio(Frame):
         frame:dato tipo frame
     '''
 
-    # CONTRUCTOR DE CLASE Ventana_inicio
+    # CONSTRUCTOR DE CLASE Ventana_inicio
     def __init__(self, master=None):
         super().__init__(master, width=1440, height=900)
         self.master = master
@@ -85,44 +85,6 @@ def añade_cobro():
     acumulado_mostrar =  Button(ac, text="Mostrar Acumulado",  width=15, height=1).place(x = 350, y = 60)
     añadir =  Button(ac, text="Añadir", width=15, height=1).place(x = 150, y = 300)
 
-def datos_propietarios():
-    dp = Toplevel() #la nueva ventana
-    dp.title("Admicon - Datos de Propietarios")
-    dp.geometry("1440x900")
-    dp.config(bg="lightblue")
-
-    frame_4 = Frame(dp)
-    frame_4.place(x = 0, y = 260)
-    frame_4.config(bg="white", width=1440, height=300)
-
-    #Buttons
-    button_recibo = Button(dp, text="Recibos", width=20, height=1 ).place(x = 0, y = 0)      
-    button_cuentas = Button(dp, text="Control de Cuentas", command= open_control_cuentas, width=20, height=1).place(x = 210, y = 0)     
-    
-    button_correos = Button(dp, text="Envío Correos", width=20, height=1).place(x = 630, y = 0) 
-    button_nomina = Button(dp, text="Nómina", width=20, height=1).place(x = 840, y = 0)  
-
-    actualizar = Button(dp, text="Actualizar", width=20, height=1).place(x = 840, y = 180)  
-
-
-    #Labels
-    label_button_propietarios = Label(dp, text="Datos Propietarios", font=("Arial"), bg="lightblue", width=20, height=1 ).place(x = 420, y = 0) 
-
-    buscar= Label(dp, text="Buscar:", font=("Arial"), bg="lightblue" ).place(x=10, y=40)  
-    modificar_datos= Label(dp, text="Modificar Datos", font=("Arial"), bg="lightblue" ).place(x=10, y=100)  
-    propietario= Label(dp, text="Propietario", font=("Arial"), bg="lightblue" ).place(x=400, y=100) 
-    apartamento = Label(dp, text="Apartamento:", font=("Arial"), bg="lightblue" ).place(x=10, y=150)  
-    nombre_apellido = Label(dp, text="Nombre y Apellido:", font=("Arial"), bg="lightblue" ).place(x=450, y=150)
-    telefono = Label(dp, text="Teléfono:", font=("Arial"), bg="lightblue" ).place(x=450, y=180)
-    correo = Label(dp, text="Correo:", font=("Arial"), bg="lightblue" ).place(x=450, y=210)
-
-
-    #Entry
-    buscar = Entry(dp).place(x=150, y=43, width=200)
-    apartamento_entry = Entry(dp).place(x=150, y=150, width=200)
-    nombre_apellido_entry= Entry(dp).place(x=600, y=150, width=200)
-    telefono_entry = Entry(dp).place(x=600, y=180, width=200)
-    correo_entry = Entry(dp).place(x=600, y=210, width=200)
 
 
 def correos_envio():

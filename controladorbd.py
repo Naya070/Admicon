@@ -20,19 +20,27 @@ def consulta_cuentas():
     my_connexion.close()
     return datos
 
-def inserta_cuentas():
+def __str__():
+    datos = consulta_cuentas()
+    aux = ""
+    for row in datos:
+        aux = aux + str(row) + "\n"
+    return aux
+
+
+def inserta_cuentas(Deudas_mes_pasado, Recibo, Mora, Aquiler_estacionamiento,
+      Deuda_actual, Pago_Bs, Pago_USD, Fecha, Cambio, Saldo):
     cursor = my_connexion.cursor()
     sql = '''INSERT INTO Cuentas_por_apartamento (Deudas_mes_pasado, Recibo, 
     Mora, Aquiler_estacionamiento, Deuda_actual, Pago_Bs, Pago_USD, Fecha, Cambio, Saldo)
     VALUES ('{}', '{}', '{}', '{}', '{}', '{}',  '{}', '{}',
      '{}', '{}' ) '''.format( Deudas_mes_pasado, Recibo, Mora, Aquiler_estacionamiento,
       Deuda_actual, Pago_Bs, Pago_USD, Fecha, Cambio, Saldo)
-    cursor.execute("SELECT * FROM Datos_por_apartamento")
-    datos = cursor.fetchall()
+    cursor.execute(sql)
+    n = cursor.rowcount
+    my_connexion.commit()
     cursor.close()
-    my_connexion.close()
-    return datos 
+    return n 
 
 def borrar_cuentas():
-    message['text'] = ''
-    try
+    pass
