@@ -8,16 +8,15 @@ from turtle import heading, width
 from tkinter import ttk
 import tkinter.font as font
 from PIL import ImageTk, Image
-from openpyxl import Workbook
 from base import Controlador
 import sqlite3
 
 from datetime import datetime
 from bs4 import BeautifulSoup
 import requests
-from openpyxl import Workbook, load_workbook
-from openpyxl.styles import Font
-from openpyxl.styles import Border, Side, Alignment
+from openpyxl import Workbook
+from openpyxl.styles import Font, Border, Side, Alignment
+from fpdf import FPDF
 
 
 LargeFont = ("Verdana", 12)
@@ -1847,10 +1846,10 @@ class Recibo_factura(tk.Frame):
 				self.dolar_bcv_mostrar = tk.Label(self,text= precio_dolar_str, font=("Arial"), bg="lightblue", relief=tk.SUNKEN ).place(x=350, y=450, width=150)
 				pass
 
-	def crear_factura_general(self):
+	def crear_factura_general_excel(self):
 		book = Workbook()
 		#book.save("FACTURA GENERAL-'%s'" % (datetime.now().strftime('%m-%Y')))
-		s = book.active #sheet
+		s = book.active #Crear hoja
 		fecha= datetime.now().strftime('%d-%m-%Y')
 		if datetime.now().strftime('%m') == "01":
 			print("enero")
@@ -2101,8 +2100,119 @@ class Recibo_factura(tk.Frame):
 		#wb1 = load_workbook("FACTURA GENERAL-'%s'" % (datetime.now().strftime('%m-%Y')))
 		#ws = wb['sheet']
 		
-		nombre_factura_general = "FACTURA GENERAL " + datetime.now().strftime('%m-%Y') + ".pdf", SaveFormat.PDF
-		book.save(nombre_factura_general)
+		
+		nombre_factura_general = "FACTURA GENERAL " + datetime.now().strftime('%m-%Y') 
+		nombre_factura_general_excel = nombre_factura_general + ".xlsx"
+		book.save(nombre_factura_general_excel)
+		
+		
+	def crear_factura_general(self):
+		'''
+		P : portrait (vertical)
+		L: landscape (horizontal)
+
+		A4: 210x297mm
+		'''
+		self.pdf = FPDF(orientation = 'P', unit = 'mm', format='A4')
+		self.pdf.add_page()
+
+		self.fecha= datetime.now().strftime('%d-%m-%Y')
+		if datetime.now().strftime('%m') == "01":
+			print("enero")
+			self.mes = "Enero"
+		if datetime.now().strftime('%m') == "02":
+			print("Feb")
+			self.mes = "Febrero"
+		if datetime.now().strftime('%m') == "03":
+			print("MArzo")
+			self.mes = "Marzo"
+		if datetime.now().strftime('%m') == "04":
+			print("Abril")
+			self.mes = "Abril"
+		if datetime.now().strftime('%m') == "05":
+			print("Mayo")
+			self.mes = "Mayo"
+		if datetime.now().strftime('%m') == "06":
+			print("Junio")
+			self.mes = "Junio"
+		if datetime.now().strftime('%m') == "07":
+			print("Julio")
+			self.mes = "Julio"
+		if datetime.now().strftime('%m') == "08":
+			print("Ag")
+			self.mes = "Agosto"
+		if datetime.now().strftime('%m') == "09":
+			print("Spt")
+			self.mes = "Septiembre"
+		if datetime.now().strftime('%m') == "10":
+			print("Oct")
+			self.mes = "Octubre"
+		if datetime.now().strftime('%m') == "11":
+			print("Nov")
+			self.mes = "Noviembre"
+		if datetime.now().strftime('%m') == "12":
+			print("Dic")
+			self.mes = "Diciembre"
+		
+		#HEAD
+		self.pdf.set_font('Arial', '', 8)
+		self.pdf.multi_cell(w=170, h=5, txt = "Conjunto Residencial Capri \nJunta de Condominio", border = 0, align = 'L', fill =0)
+		
+		
+		self.pdf.multi_cell(w=170, h=8, txt = "RECIBO DE CONDOMINIO", border = 1, align = 'C', fill =0)
+
+		self.pdf.text(x=15, y=65, txt= "Alicuota")
+		
+		self.pdf.cell(w=90, h=40, txt = "", border = 1, align = 'C', fill =0 )
+		
+
+		self.pdf.text(x=105, y=35, txt= "Recibo Nro")
+		self.pdf.text(x=105, y=45, txt= "Mes")
+		self.pdf.text(x=105, y=55, txt= "Fecha")
+		self.pdf.text(x=105, y=65, txt= "Alicuota General")
+
+		self.pdf.text(x=145, y=35, txt= self.fecha)
+		self.pdf.text(x=145, y=45, txt= self.mes)
+		self.pdf.text(x=145, y=55, txt= "Inmediato")
+		self.pdf.text(x=145, y=65, txt= "0,368 %")
+
+		self.pdf.cell(w=40, h=40, txt = "", border = 1, align = 'C', fill =0 )
+		self.pdf.multi_cell(w=40, h=40, txt = "", border = 1, align = 'C', fill =0 )
+
+		self.pdf.text(x=45, y= 72, txt= "Descripción")
+		self.pdf.text(x=110, y=72, txt= "Gastos")
+		self.pdf.text(x=150, y=72, txt= "Cuota P/Apto")
+		self.pdf.multi_cell(w=170, h=6, txt = "", border = 1, align = 'C', fill =0)
+
+		#BODY
+		#SECCIONES
+
+		self.my_connexion = sqlite3.connect("Admicon.db")
+		self.cursor = self.my_connexion.cursor()
+		
+		self.i = 9 #contador celdas
+		self.c = 1 #contador
+		for self.numero in range(1,7):
+			print("número: " + str(self.numero))
+			if self.numero ==1:
+				seccion="Gastos Ordinarios"
+			if self.numero ==2:
+				seccion="Anticipo"
+			if self.numero ==3:
+				seccion="Previsión"
+			if self.numero ==4:
+				seccion="Gastos Variables"
+			if self.numero ==5:
+				seccion="Gastos Extraordinarios"
+			if self.numero ==6:
+				seccion="Otros"
+
+
+		self.nombre_factura_apto = "FACTURA" + datetime.now().strftime('%m-%Y') + ".pdf"
+		self.pdf.output(self.nombre_factura_apto)
+		print("Funcionó!")
+		
+		
 		
 
 
