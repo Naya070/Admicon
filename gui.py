@@ -1,3 +1,4 @@
+from operator import and_
 from pickle import TRUE
 import tkinter as tk
 #import tkSimpleDialog
@@ -2192,6 +2193,7 @@ class Recibo_factura(tk.Frame):
 		
 		self.i = 9 #contador celdas
 		self.c = 1 #contador
+		altura_y = 78
 		for self.numero in range(1,7):
 			print("número: " + str(self.numero))
 			if self.numero ==1:
@@ -2206,7 +2208,69 @@ class Recibo_factura(tk.Frame):
 				seccion="Gastos Extraordinarios"
 			if self.numero ==6:
 				seccion="Otros"
+			
+			self.total_recibo = self.cursor.execute("SELECT * FROM Recibo_total WHERE id=1")
+			
+			for segmento in self.total_recibo:
+				self.segm = segmento[self.numero*2]
+			
+			self.pdf.multi_cell(w=170, h=6, txt = seccion, border = 1, align = 'L', fill =0)
+			altura_y = altura_y +6
+			
+			
+			if self.segm > 0:
+				self.recibo = self.cursor.execute("SELECT * FROM Recibo WHERE Seccion='%s'" % (self.numero))
+				self.a = 0
+				for self.item in self.recibo:
 
+					item1= self.item[1]
+					conteo = len(self.item[1])
+					texto_descripcion = ""
+					s = 0
+					self.a = self.a +6
+					for letra in item1:
+						if s < 60:
+							texto_descripcion = texto_descripcion + letra
+							s=s+1
+						if s >= 60:
+							if s!= " ":
+								texto_descripcion = texto_descripcion + letra
+								s=s+1
+						if s >= 60:
+							if s!= " ":
+								texto_descripcion = texto_descripcion + "/n"
+								altura_y = altura_y +6
+								s = 0
+					
+					item2= self.item[2]
+					item3= self.item[3]
+					
+					
+					self.pdf.text(x=105, y=altura_y, txt= str(item2))
+					self.pdf.text(x=150, y=altura_y, txt= str(item3))
+					altura_y = altura_y +6
+				self.pdf.multi_cell(w=170, h=self.a, txt = texto_descripcion, border = 1, align = 'L', fill =0)
+
+				self.total_recibo = self.cursor.execute("SELECT * FROM Recibo_total WHERE id=1")
+				
+				for self.t_r in self.total_recibo:
+					print(self.t_r)
+				
+				self.pdf.multi_cell(w=170, h=6, txt = "Total " + seccion, border = 1, align = 'L', fill =0)
+				self.pdf.text(x=105, y=altura_y, txt= str(self.t_r[self.c]))
+				self.c= self.c+1
+				self.pdf.text(x=150, y=altura_y, txt= str(self.t_r[self.c]))
+				self.c= self.c+1
+				altura_y = altura_y +6
+
+				for self.t_r in self.total_recibo:
+					print(self.t_r)
+				
+				self.pdf.multi_cell(w=170, h=6, txt = "Total " + seccion, border = 1, align = 'L', fill =0)
+				self.pdf.text(x=105, y=altura_y, txt= str(self.t_r[13]))
+				self.pdf.text(x=150, y=altura_y, txt= str(self.t_r[14]))
+				altura_y = altura_y +6
+			
 
 		self.nombre_factura_apto = "FACTURA" + datetime.now().strftime('%m-%Y') + ".pdf"
 		self.pdf.output(self.nombre_factura_apto)
