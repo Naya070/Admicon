@@ -1794,7 +1794,7 @@ class Recibo_factura(tk.Frame):
 
 	def R(self):
 		try:
-			request = requests.get("http://www.google.com", timeout=5)
+			request = requests.get("http://www.bcv.org.ve", timeout=5)
 		except(requests.ConnectionError, requests.Timeout):
 				messagebox.showwarning("ADVERTENCIA","No hay conexión a Internet, coloque el monto del dólar manualmente")
 		else:
@@ -2122,10 +2122,10 @@ class Recibo_factura(tk.Frame):
 			print("enero")
 			self.mes = "Enero"
 		if datetime.now().strftime('%m') == "02":
-			print("Feb")
+			print("Febrero")
 			self.mes = "Febrero"
 		if datetime.now().strftime('%m') == "03":
-			print("MArzo")
+			print("Marzo")
 			self.mes = "Marzo"
 		if datetime.now().strftime('%m') == "04":
 			print("Abril")
@@ -2156,34 +2156,35 @@ class Recibo_factura(tk.Frame):
 			self.mes = "Diciembre"
 		
 		#HEAD
-		self.pdf.set_font('Arial', '', 8)
-		self.pdf.multi_cell(w=170, h=5, txt = "Conjunto Residencial Capri \nJunta de Condominio", border = 0, align = 'L', fill =0)
+		self.pdf.set_font('Arial', '', 7)
+		self.pdf.multi_cell(w=110, h=3, txt = "Conjunto Residencial Capri \nJunta de Condominio", border = 0, align = 'L', fill =0)
 		
 		
-		self.pdf.multi_cell(w=170, h=8, txt = "RECIBO DE CONDOMINIO", border = 1, align = 'C', fill =0)
+		self.pdf.multi_cell(w=110, h=4, txt = "RECIBO DE CONDOMINIO", border = 1, align = 'C', fill =0)
 
-		self.pdf.text(x=15, y=65, txt= "Alicuota")
+		self.pdf.text(x=15, y=41, txt= "Alicuota")
 		
-		self.pdf.cell(w=90, h=40, txt = "", border = 1, align = 'C', fill =0 )
+		self.pdf.cell(w=60, h=22, txt = "", border = 1, align = 'C', fill =0 )
 		
 
-		self.pdf.text(x=105, y=35, txt= "Recibo Nro")
-		self.pdf.text(x=105, y=45, txt= "Mes")
-		self.pdf.text(x=105, y=55, txt= "Fecha")
-		self.pdf.text(x=105, y=65, txt= "Alicuota General")
+		self.pdf.text(x=72, y=26, txt= "Recibo Nro")
+		self.pdf.text(x=72, y=31, txt= "Mes")
+		self.pdf.text(x=72, y=36, txt= "Fecha")
+		self.pdf.text(x=72, y=41, txt= "Alicuota General")
 
-		self.pdf.text(x=145, y=35, txt= self.fecha)
-		self.pdf.text(x=145, y=45, txt= self.mes)
-		self.pdf.text(x=145, y=55, txt= "Inmediato")
-		self.pdf.text(x=145, y=65, txt= "0,368 %")
+		self.pdf.text(x=97, y=26, txt= self.fecha)
+		self.pdf.text(x=97, y=31, txt= self.mes)
+		self.pdf.text(x=97, y=36, txt= "Inmediato")
+		self.pdf.text(x=97, y=41, txt= "0,368 %")
 
-		self.pdf.cell(w=40, h=40, txt = "", border = 1, align = 'C', fill =0 )
-		self.pdf.multi_cell(w=40, h=40, txt = "", border = 1, align = 'C', fill =0 )
+		self.pdf.cell(w=25, h=22, txt = "", border = 1, align = 'C', fill =0 )
+		self.pdf.multi_cell(w=25, h=22, txt = "", border = 1, align = 'C', fill =0 )
 
-		self.pdf.text(x=45, y= 72, txt= "Descripción")
-		self.pdf.text(x=110, y=72, txt= "Gastos")
-		self.pdf.text(x=150, y=72, txt= "Cuota P/Apto")
-		self.pdf.multi_cell(w=170, h=6, txt = "", border = 1, align = 'C', fill =0)
+		self.pdf.text(x=15, y= 45, txt= "Descripción")
+		self.pdf.text(x=72, y=45, txt= "Gastos")
+		self.pdf.text(x=97, y=45, txt= "Cuota P/Apto")
+		self.pdf.multi_cell(w=110, h=4, txt = "", border = 1, align = 'C', fill =0)
+		
 
 		#BODY
 		#SECCIONES
@@ -2193,7 +2194,7 @@ class Recibo_factura(tk.Frame):
 		
 		self.i = 9 #contador celdas
 		self.c = 1 #contador
-		altura_y = 78
+		altura_y = 49
 		for self.numero in range(1,7):
 			print("número: " + str(self.numero))
 			if self.numero ==1:
@@ -2214,63 +2215,146 @@ class Recibo_factura(tk.Frame):
 			for segmento in self.total_recibo:
 				self.segm = segmento[self.numero*2]
 			
-			self.pdf.multi_cell(w=170, h=6, txt = seccion, border = 1, align = 'L', fill =0)
-			altura_y = altura_y +6
+			
 			
 			
 			if self.segm > 0:
+
+				self.pdf.multi_cell(w=110, h=4, txt = "", border = 1, align = 'L', fill =0)
+				self.pdf.text(x=15, y=altura_y, txt= seccion)
+				altura_y = altura_y +4
+
 				self.recibo = self.cursor.execute("SELECT * FROM Recibo WHERE Seccion='%s'" % (self.numero))
 				self.a = 0
 				for self.item in self.recibo:
 
 					item1= self.item[1]
 					conteo = len(self.item[1])
-					texto_descripcion = ""
-					s = 0
-					self.a = self.a +6
-					for letra in item1:
-						if s < 60:
-							texto_descripcion = texto_descripcion + letra
-							s=s+1
-						if s >= 60:
-							if s!= " ":
-								texto_descripcion = texto_descripcion + letra
+					
+					self.a = self.a +4
+					
+					if conteo <= 35:
+						self.pdf.text(x=15, y=altura_y, txt= item1)
+					
+					if conteo < 2*35 and conteo > 35 :
+						texto_descripcion1 = ""
+						texto_descripcion2 = ""
+						s = 0
+						for letra in item1:
+							if s <= 35:
+								texto_descripcion1 = texto_descripcion1 + letra
 								s=s+1
-						if s >= 60:
-							if s!= " ":
-								texto_descripcion = texto_descripcion + "/n"
-								altura_y = altura_y +6
-								s = 0
+							if s > 35 and letra != " ":
+								texto_descripcion1 = texto_descripcion1 + letra
+								s=s+1
+							if s > 35 and letra == " ":
+								texto_descripcion2 = item1[s:conteo]
+						
+						self.pdf.text(x=15, y=altura_y, txt= texto_descripcion1)
+						self.pdf.text(x=15, y=altura_y, txt= texto_descripcion2)
 					
 					item2= self.item[2]
 					item3= self.item[3]
 					
 					
-					self.pdf.text(x=105, y=altura_y, txt= str(item2))
-					self.pdf.text(x=150, y=altura_y, txt= str(item3))
-					altura_y = altura_y +6
-				self.pdf.multi_cell(w=170, h=self.a, txt = texto_descripcion, border = 1, align = 'L', fill =0)
+					self.pdf.text(x=72, y=altura_y, txt= str(round(item2, 2)).replace('.',','))
+					self.pdf.text(x=97, y=altura_y, txt= str(round(item3, 2)).replace('.',','))
+					altura_y = altura_y +4
+				self.pdf.multi_cell(w=110, h=self.a, txt = "", border = 1, align = 'L', fill =0)
 
 				self.total_recibo = self.cursor.execute("SELECT * FROM Recibo_total WHERE id=1")
 				
 				for self.t_r in self.total_recibo:
 					print(self.t_r)
+				if self.numero == 1:
+					primero = 1
+					segundo = 2
+				if self.numero == 2:
+					primero = 3
+					segundo = 4
+				if self.numero == 3:
+					primero = 5
+					segundo = 6
+				if self.numero == 4:
+					primero = 7
+					segundo = 8
+				if self.numero == 5:
+					primero = 9
+					segundo = 10
+				if self.numero == 6:
+					primero = 11
+					segundo = 12
 				
-				self.pdf.multi_cell(w=170, h=6, txt = "Total " + seccion, border = 1, align = 'L', fill =0)
-				self.pdf.text(x=105, y=altura_y, txt= str(self.t_r[self.c]))
-				self.c= self.c+1
-				self.pdf.text(x=150, y=altura_y, txt= str(self.t_r[self.c]))
-				self.c= self.c+1
-				altura_y = altura_y +6
+				self.pdf.set_font('Arial', 'B', 7)
+				self.pdf.multi_cell(w=110, h=4, txt = "Total " + seccion, border = 1, align = 'L', fill =0)
+				self.pdf.text(x=72, y=altura_y, txt= str(round(self.t_r[primero], 2)).replace('.',','))
+				self.pdf.text(x=97, y=altura_y, txt= str(round(self.t_r[segundo], 2)).replace('.',','))
+				altura_y = altura_y +4
+				self.pdf.set_font('Arial', '', 7)
 
-				for self.t_r in self.total_recibo:
-					print(self.t_r)
+		self.total_final = self.cursor.execute("SELECT Suma_total_general, Suma_total_apto FROM Recibo_total WHERE id=1")
+		for self.tf in self.total_final:
+				print(self.tf)
+
+		self.pdf.set_font('Arial', 'B', 7)	
+		self.pdf.set_text_color(r=25, g=25, b=112)
+		self.pdf.multi_cell(w=110, h=4, txt = "Total Cuota Condominio ", border = 1, align = 'L', fill =0)
+		self.pdf.text(x=72, y=altura_y, txt= str(round(self.tf[0], 2)).replace('.',','))
+		self.pdf.text(x=97, y=altura_y, txt= str(round(self.tf[1], 2)).replace('.',','))
+		altura_y = altura_y +4
+		
+		#Bottom
+		self.deudas = self.cursor.execute("SELECT Alquiler_estacionamiento, Mora, Deudas_mes_pasado FROM Cuentas_por_apartamento WHERE id=1")
 				
-				self.pdf.multi_cell(w=170, h=6, txt = "Total " + seccion, border = 1, align = 'L', fill =0)
-				self.pdf.text(x=105, y=altura_y, txt= str(self.t_r[13]))
-				self.pdf.text(x=150, y=altura_y, txt= str(self.t_r[14]))
-				altura_y = altura_y +6
-			
+		for self.deuda in self.deudas:
+				print(self.deuda)
+
+		self.pdf.set_font('Arial', '', 7)
+		self.pdf.set_text_color(r=0, g=0, b=0)
+		self.pdf.cell(w=60, h=30, txt = "", border = 1, align = 'L', fill =0)
+		self.pdf.text(x=30, y=altura_y, txt= "IMPORTANTE")
+		altura_y = altura_y +4
+
+		self.pdf.text(x=12, y=altura_y, txt= "PAGUE LOS PRIMEROS 5 DÍAS DE CADA MES")
+
+		self.pdf.text(x=71, y=altura_y, txt= "Total cuota condominio: ")
+		self.pdf.text(x= 100, y=altura_y, txt= str(round(self.tf[1], 2)).replace('.',','))
+		altura_y = altura_y +4
+
+
+		self.pdf.text(x=12, y=altura_y, txt= "Realice su pago: Transferencia o Depósito")
+		self.pdf.text(x=71, y=altura_y, txt= "Alquiler Estacionamiento: ")
+		self.pdf.text(x=100, y=altura_y, txt= str(round(self.deuda[0], 2)).replace('.',','))
+		altura_y = altura_y +4
+
+		self.pdf.text(x=12, y=altura_y, txt= "Banco Venezuela")
+		self.pdf.text(x=71, y=altura_y, txt= "1,00 % Interes de Mora: ")
+		self.pdf.text(x=100, y=altura_y, txt= str(round(self.deuda[1], 2)).replace('.',','))
+		altura_y = altura_y +4
+
+		self.pdf.text(x=12, y=altura_y, txt= "Cuenta Corriente 0102-0239-61-0000001203")
+		self.pdf.text(x=71, y=altura_y, txt= "Acumulado Mes Pasado: ")
+		self.pdf.text(x=100, y=altura_y, txt= str(round(self.deuda[2], 2)).replace('.',','))
+		altura_y = altura_y + 4
+
+		self.pdf.text(x=12, y=altura_y, txt= "A Nombre Junta de Condominio Conj. Res. Capri")
+		altura_y = altura_y +4
+
+		self.monto_pago = self.tf[1] + self.deuda[0] + self.deuda[1] + self.deuda[2]
+
+		self.pdf.text(x=12, y=altura_y, txt= "RIF. J-310510814")
+		self.pdf.set_font('Arial', 'B', 7)
+		self.pdf.set_text_color(r=139, g=0, b=0)
+		self.pdf.text(x=71, y=altura_y, txt= "MONTO A PAGAR: ")
+		self.pdf.text(x=100, y=altura_y, txt= str(round(self.monto_pago, 2)).replace('.',','))
+		altura_y = altura_y +4
+
+
+		self.pdf.multi_cell(w=50, h=30, txt = "", border = 1, align = 'L', fill =0)
+		self.pdf.set_font('Arial', '', 7)
+		self.pdf.set_text_color(r=0, g=0, b=0)
+		self.pdf.multi_cell(w=110, h=4, txt = "ENVIE SU SOPORTE DE PAGO POR CORREO A LA DIRECCION: conjunto_capri_2010@hotmail.com \nTELEFONO OFICINA 0212-832.26.00  ", border = 1, align = 'C', fill =0)
+
 
 		self.nombre_factura_apto = "FACTURA" + datetime.now().strftime('%m-%Y') + ".pdf"
 		self.pdf.output(self.nombre_factura_apto)
